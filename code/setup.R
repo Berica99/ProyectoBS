@@ -11,3 +11,11 @@ if (!requireNamespace("httr", quietly = TRUE)) {
 if (!requireNamespace("jsonlite", quietly = TRUE)) {
   install.packages("jsonlite")
 }
+# ---- Parte 2 ----
+# BiocManager is used to install Bioconductor packages
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+  install.packages("BiocManager")
+}
+if (!requireNamespace("STRINGdb", quietly = TRUE)) {
+  BiocManager::install("STRINGdb")
+}
