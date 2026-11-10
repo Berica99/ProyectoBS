@@ -1,0 +1,15 @@
+software/
+results/*
+!results/.gitkeep
+code/R_LIBS/
+code/*.gz
+code/gene
+code/to_Remove
+.Rhistory
+.RData
+report/*.aux
+report/*.bbl
+report/*.blg
+report/*.log
+report/*.synctex.gz
+report/report.pdf
