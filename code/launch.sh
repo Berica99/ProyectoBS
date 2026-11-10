@@ -2,7 +2,7 @@
 set -e
 
 cd "$(dirname "$0")/.."
-export R_LIBS_USER=./code/R_LIBS
+export R_LIBS_USER="$(pwd)/code/R_LIBS"
 mkdir -p results
 
 Rscript code/analysis.R "$@"
