@@ -70,3 +70,51 @@ cat("Genes not mapped:", setdiff(genes$name, string_ids$name), "\n")
 # Extra guía: guardar el mapeo y la tabla de asociaciones
 write.csv2(string_ids, file = "string_mapping.csv", row.names = FALSE)
 write.csv2(interaction_network, file = "string_interactions.csv", row.names = FALSE)
+
+# =============================================================================
+# Parte 3: Pasar la Red a igraph y Calcular sus Propiedades
+# =============================================================================
+library(igraph)
+
+# Conversión a igraph
+g <- graph_from_data_frame(interaction_network, directed = FALSE)
+
+# Genes mapped to STRING but with no interactions (so not in the network)
+no_interactions <- setdiff(string_ids$name, V(g)$name)
+cat("Genes with no interactions (not in the network):", length(no_interactions), "\n")
+
+# Número de Nodos y Aristas
+num_nodes <- gorder(g)  # Number of nodes
+num_edges <- gsize(g)   # Number of edges
+
+cat("Number of nodes:", num_nodes, "\n")
+cat("Number of edges:", num_edges, "\n")
+
+# Grado Medio
+degree_values <- degree(g)
+
+average_degree <- mean(degree_values)
+cat("Average degree:", average_degree, "\n")
+
+# Densidad de la Red
+network_density <- edge_density(g)
+cat("Network density:", network_density, "\n")
+
+# Centralidad
+centrality_closeness <- closeness(g)
+
+cat("Closeness centrality (first 5 nodes):", head(centrality_closeness, 5), "\n")
+
+print(components(g)$no)  # Number of components
+
+print(head(sort(centrality_closeness, decreasing = TRUE)))  # Highest closeness
+
+# Extra guía: bucles / aristas repetidas y tabla de control
+cat("Bucles:", any_loop(g), "| Aristas múltiples:", any_multiple(g), "\n")
+control <- data.frame(
+  recuento = c("Genes HPO", "Genes mapeados en STRING", "Nodos de la red", "Aristas de la red",
+               "Grado medio", "Densidad", "Componentes"),
+  valor    = c(nrow(genes), nrow(string_ids), num_nodes, num_edges,
+               average_degree, network_density, components(g)$no)
+)
+write.csv2(control, file = "tabla_control.csv", row.names = FALSE)

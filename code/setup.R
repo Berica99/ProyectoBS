@@ -19,3 +19,8 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
 if (!requireNamespace("STRINGdb", quietly = TRUE)) {
   BiocManager::install("STRINGdb")
 }
+
+# ---- Parte 3 ----
+if (!requireNamespace("igraph", quietly = TRUE)) {
+  install.packages("igraph")
+}
