@@ -118,3 +118,38 @@ control <- data.frame(
                average_degree, network_density, components(g)$no)
 )
 write.csv2(control, file = "tabla_control.csv", row.names = FALSE)
+
+# =============================================================================
+# Parte 4: Visualizar la Red
+# =============================================================================
+# Gráfico Básico
+pdf("network_basic.pdf")
+plot(g, vertex.size = 5, vertex.label.cex = 0.7, main = "Basic Interaction Network")
+dev.off()
+
+# Tamaño de los Nodos según un Atributo
+pdf("network_degree_size.pdf")
+plot(g, vertex.size = degree(g) / 2, vertex.label.cex = 0.8, main = "Node size by degree")
+dev.off()
+
+# Disposición de Fruchterman-Reingold
+pdf("network_fruchterman_reingold.pdf")
+set.seed(123)
+layout <- layout_with_fr(g)
+plot(g, layout = layout, vertex.color = "skyblue", vertex.size = 5, edge.width = 0.5,
+     main = "Fruchterman-Reingold Layout")
+dev.off()
+
+# Disposición Circular
+pdf("network_circular.pdf")
+circular_layout <- layout_in_circle(g)
+plot(g, layout = circular_layout, vertex.color = "lightgreen", vertex.size = 5,
+     vertex.label.cex = 0.8, edge.width = 0.5, main = "Circular Layout")
+dev.off()
+
+# Sin Etiquetas
+pdf("network_no_labels.pdf")
+set.seed(123)
+plot(g, vertex.color = "orange", vertex.size = 5, vertex.label = NA, edge.width = 0.5,
+     main = "Network without labels")
+dev.off()
