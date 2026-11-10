@@ -1,8 +1,3 @@
-
-# Proyecto Biologia de Sistemas
-# Analisis de redes de interaccion
-# Fenotipo: Cone/cone-rod dystrophy
-
 # Leer argumentos de la terminal
 args <- commandArgs(trailingOnly = TRUE)
 
@@ -13,10 +8,7 @@ if (length(args) < 1) {
 
 hpo_id <- args[1]
 
-# Directorio de trabajo
-if (basename(getwd()) == "code") {
-  setwd("..")
-}
+# Directorio de trabajo: todo lo que se genere va a results/
+setwd("results")
 
 cat("Fenotipo seleccionado:", hpo_id, "\n")
-
