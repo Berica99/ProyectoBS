@@ -24,3 +24,21 @@ if (!requireNamespace("STRINGdb", quietly = TRUE)) {
 if (!requireNamespace("igraph", quietly = TRUE)) {
   install.packages("igraph")
 }
+
+
+# ---- Parte 5 ----
+
+set.seed(123)
+communities <- cluster_louvain(g)
+
+cat("Number of clusters:", length(communities), "\n")
+
+print(sizes(communities))
+
+pdf("network_louvain.pdf")
+plot(communities, g, vertex.size = 5, vertex.label = NA, main = "Clustering with Louvain")
+dev.off()
+
+# Extra guía: tabla gen - comunidad
+write.csv2(data.frame(gene = V(g)$name, community = membership(communities)),
+           file = "communities.csv", row.names = FALSE)
