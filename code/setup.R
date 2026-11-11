@@ -42,3 +42,4 @@ dev.off()
 # Extra guía: tabla gen - comunidad
 write.csv2(data.frame(gene = V(g)$name, community = membership(communities)),
            file = "communities.csv", row.names = FALSE)
+           
