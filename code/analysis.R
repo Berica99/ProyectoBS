@@ -153,3 +153,22 @@ set.seed(123)
 plot(g, vertex.color = "orange", vertex.size = 5, vertex.label = NA, edge.width = 0.5,
      main = "Network without labels")
 dev.off()
+
+
+# =============================================================================
+# Parte 5: Clustering de la Red
+# =============================================================================
+set.seed(123)
+communities <- cluster_louvain(g)
+
+cat("Number of clusters:", length(communities), "\n")
+
+print(sizes(communities))
+
+pdf("network_louvain.pdf")
+plot(communities, g, vertex.size = 5, vertex.label = NA, main = "Clustering with Louvain")
+dev.off()
+
+# Extra guía: tabla gen - comunidad
+write.csv2(data.frame(gene = V(g)$name, community = membership(communities)),
+           file = "communities.csv", row.names = FALSE)
