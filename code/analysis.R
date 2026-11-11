@@ -172,3 +172,21 @@ dev.off()
 # Extra guía: tabla gen - comunidad
 write.csv2(data.frame(gene = V(g)$name, community = membership(communities)),
            file = "communities.csv", row.names = FALSE)
+
+# =============================================================================
+# Parte 6: Enriquecimiento Funcional
+# =============================================================================
+library(clusterProfiler)
+library(org.Hs.eg.db) # Human gene annotation database
+
+enrich_results <- enrichGO(
+  gene          = genes$name,      # Set of genes of interest (from HPO)
+  OrgDb         = org.Hs.eg.db,    # Gene annotation database
+  keyType       = "SYMBOL",        # Type of gene identifier (gene symbols)
+  ont           = "BP",            # Ontology (BP: biological processes)
+  pAdjustMethod = "BH",            # Method for p-value adjustment
+  pvalueCutoff  = 0.05,            # Significance threshold for p-value
+  qvalueCutoff  = 0.2              # Significance threshold for q-value
+)
+
+print(head(enrich_results))

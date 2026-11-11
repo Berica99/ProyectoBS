@@ -25,3 +25,6 @@ if (!requireNamespace("igraph", quietly = TRUE)) {
   install.packages("igraph")
 }
 
+# ---- Parte 6 ----
+if (!requireNamespace("clusterProfiler", quietly = TRUE)) BiocManager::install("clusterProfiler")
+if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) BiocManager::install("org.Hs.eg.db")
