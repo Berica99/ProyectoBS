@@ -191,6 +191,34 @@ enrich_results <- enrichGO(
 
 print(head(enrich_results))
 
+# Variante: fondo con todos los genes anotados en HPO
+g2p <- read.delim("https://github.com/obophenotype/human-phenotype-ontology/releases/latest/download/genes_to_phenotype.txt")
+
+enrich_results_hpo <- enrichGO(
+  gene     = genes$name,
+  universe = unique(g2p$gene_symbol),   # Background: all genes with an HPO annotation
+  OrgDb    = org.Hs.eg.db,
+  keyType  = "SYMBOL",
+  ont      = "BP"
+)
+
+# Visualización de los Resultados
+library(enrichplot)
+
+pdf("GO_enrichment_dotplot.pdf", width = 9, height = 7)
+print(dotplot(enrich_results, showCategory = 10, title = "GO Enrichment (BP)"))
+dev.off()
+
+pdf("GO_enrichment_barplot.pdf", width = 9, height = 7)
+print(barplot(enrich_results, showCategory = 10, title = "GO Enrichment (BP)"))
+dev.off()
+
+# Guardar los Resultados
+write.csv2(as.data.frame(enrich_results), file = "GO_enrichment.csv", row.names = FALSE)
+
+# Extra guía: guardar también el ORA con fondo HPO
+write.csv2(as.data.frame(enrich_results_hpo), file = "GO_enrichment_fondoHPO.csv", row.names = FALSE)
+
 # -----------------------------------------------------------------------------
 # Enriquecimiento de cada Cluster
 # -----------------------------------------------------------------------------
