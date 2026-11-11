@@ -28,3 +28,4 @@ if (!requireNamespace("igraph", quietly = TRUE)) {
 # ---- Parte 6 ----
 if (!requireNamespace("clusterProfiler", quietly = TRUE)) BiocManager::install("clusterProfiler")
 if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) BiocManager::install("org.Hs.eg.db")
+if (!requireNamespace("enrichplot", quietly = TRUE)) BiocManager::install("enrichplot")
