@@ -190,3 +190,64 @@ enrich_results <- enrichGO(
 )
 
 print(head(enrich_results))
+
+# -----------------------------------------------------------------------------
+# Enriquecimiento de cada Cluster
+# -----------------------------------------------------------------------------
+# Genes de cada Cluster
+genes_clusters <- split(V(g)$name, membership(communities))
+
+# Look at the genes in each cluster. What pathways/GO terms do you think might be enriched?
+print(genes_clusters)
+
+# Tamaño Mínimo de los Clusters
+min_size <- 5
+genes_clusters <- genes_clusters[lengths(genes_clusters) >= min_size]
+
+cat("Clusters with at least", min_size, "genes:", length(genes_clusters), "\n")
+
+print(lengths(genes_clusters))
+
+# Enriquecimiento ORA de cada Cluster
+enrichment_results_clusters <- list()
+
+for (i in names(genes_clusters)) {
+  enrichment_results_clusters[[i]] <- enrichGO(
+    gene          = genes_clusters[[i]],   # Genes in the current cluster
+    universe      = V(g)$name,             # Background: all genes in the network
+    OrgDb         = org.Hs.eg.db,
+    keyType       = "SYMBOL",
+    ont           = "BP",
+    pAdjustMethod = "BH",
+    pvalueCutoff  = 0.05,
+    qvalueCutoff  = 0.2
+  )
+}
+
+# Most significant term for each cluster
+cluster_summary <- data.frame(
+  cluster = names(genes_clusters),
+  genes   = lengths(genes_clusters),
+  top_term = sapply(enrichment_results_clusters, function(x) {
+    res <- as.data.frame(x)
+    if (nrow(res) == 0) "(none)" else res$Description[1]
+  })
+)
+print(cluster_summary)
+
+# Dotplot for the first cluster, as an example
+pdf("GO_enrichment_cluster_dotplot.pdf", width = 9, height = 7)
+print(dotplot(enrichment_results_clusters[[1]], showCategory = 10,
+        title = paste("GO Enrichment, cluster", names(genes_clusters)[1])))
+dev.off()
+
+for (i in names(enrichment_results_clusters)) {
+  write.csv2(
+    as.data.frame(enrichment_results_clusters[[i]]),
+    file = paste0("enrichment_cluster_", i, ".csv"),
+    row.names = FALSE
+  )
+}
+
+# Extra guía: resumen de clústeres (incluye los que no tienen términos)
+write.csv2(cluster_summary, file = "cluster_summary.csv", row.names = FALSE)
