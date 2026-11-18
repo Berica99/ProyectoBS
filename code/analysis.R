@@ -279,3 +279,45 @@ for (i in names(enrichment_results_clusters)) {
 
 # Extra guía: resumen de clústeres (incluye los que no tienen términos)
 write.csv2(cluster_summary, file = "cluster_summary.csv", row.names = FALSE)
+
+# =============================================================================
+# Posible ampliación: comparación de umbrales de STRING
+# =============================================================================
+umbrales <- c(150, 400, 700, 800, 900)   # baja, media, alta, la nuestra, máxima
+comparacion <- data.frame()
+
+for (u in umbrales) {
+  string_db_u <- STRINGdb$new(version = "12.5", species = 9606,
+                              score_threshold = u, input_directory = "string_data")
+  string_ids_u <- string_db_u$map(genes, "name", removeUnmappedRows = TRUE)
+
+  interaction_network_u <- string_db_u$get_interactions(string_ids_u$STRING_id)
+  interaction_network_u <- unique(interaction_network_u[, 1:2])
+  interaction_network_u$from <- string_ids_u$name[match(interaction_network_u$from, string_ids_u$STRING_id)]
+  interaction_network_u$to <- string_ids_u$name[match(interaction_network_u$to, string_ids_u$STRING_id)]
+
+  g_u <- graph_from_data_frame(interaction_network_u, directed = FALSE)
+
+  # Añadir una fila a la tabla con las métricas de este umbral
+  comparacion <- rbind(comparacion, data.frame(
+    umbral            = u,
+    genes_mapeados    = nrow(string_ids_u),
+    sin_interacciones = length(setdiff(string_ids_u$name, V(g_u)$name)),
+    nodos             = gorder(g_u),
+    aristas           = gsize(g_u),
+    grado_medio       = mean(degree(g_u)),
+    densidad          = edge_density(g_u),
+    componentes       = components(g_u)$no,
+    nodos_comp_mayor  = max(components(g_u)$csize)
+  ))
+
+  #Figura de la red con este umbral
+  pdf(paste0("network_umbral_", u, ".pdf"))
+  set.seed(123)
+  plot(g_u, vertex.color = "orange", vertex.size = 5, vertex.label = NA, edge.width = 0.5,
+       main = paste("Red STRING, umbral", u))
+  dev.off()
+}
+
+print(comparacion)
+write.csv2(comparacion, file = "comparacion_umbrales.csv", row.names = FALSE)
