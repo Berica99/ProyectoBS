@@ -281,8 +281,10 @@ for (i in names(enrichment_results_clusters)) {
 write.csv2(cluster_summary, file = "cluster_summary.csv", row.names = FALSE)
 
 # =============================================================================
-# Posible ampliación: comparación de umbrales de STRING
+# Ampliación
 # =============================================================================
+# ---PARTE 2: comparación de umbrales de STRING--- 
+
 umbrales <- c(150, 400, 700, 800, 900)   # baja, media, alta, la nuestra, máxima
 comparacion <- data.frame()
 
@@ -321,3 +323,5 @@ for (u in umbrales) {
 
 print(comparacion)
 write.csv2(comparacion, file = "comparacion_umbrales.csv", row.names = FALSE)
+
+## Al comparar, nos hemos quedado con 800 como umbral principal y 700 como umbral secundario.
