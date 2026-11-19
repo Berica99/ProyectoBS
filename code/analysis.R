@@ -307,8 +307,8 @@ for (u in umbrales) {
     aristas           = gsize(g_u),
     grado_medio       = mean(degree(g_u)),
     densidad          = edge_density(g_u),
-    componentes       = components(g_u)$no,
-    nodos_comp_mayor  = max(components(g_u)$csize)
+    componentes       = igraph::components(g_u)$no,
+    nodos_comp_mayor  = max(igraph::components(g_u)$csize)
   ))
 
   #Figura de la red con este umbral
