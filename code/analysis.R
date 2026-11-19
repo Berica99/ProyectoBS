@@ -359,3 +359,5 @@ centralidad <- data.frame(
 centralidad <- centralidad[order(-centralidad$intermediacion), ]
 print(head(centralidad, 10))
 write.csv2(centralidad, file = "centralidad_genes.csv", row.names = FALSE)
+
+## CONCLUSIÓN: Se observa que CEP290 es el principal gen puente entre un núcleo ciliar muy denso (genes BBS) y un módulo de fotorreceptores ramificado (alrededor de AIPL1, GUCY2D y RPGRIP1)
