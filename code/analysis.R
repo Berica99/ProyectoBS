@@ -281,9 +281,10 @@ for (i in names(enrichment_results_clusters)) {
 write.csv2(cluster_summary, file = "cluster_summary.csv", row.names = FALSE)
 
 # =============================================================================
-# Ampliación
+# SECCIÓN DE AMPLIACIONES
 # =============================================================================
-# ---PARTE 2: comparación de umbrales de STRING--- 
+
+# ---PARTE 2: comparación de umbrales de STRING --- 
 
 umbrales <- c(150, 400, 700, 800, 900)   # baja, media, alta, la nuestra, máxima
 comparacion <- data.frame()
@@ -324,11 +325,11 @@ for (u in umbrales) {
 print(comparacion)
 write.csv2(comparacion, file = "comparacion_umbrales.csv", row.names = FALSE)
 
-## Al comparar, nos hemos quedado con 800 como umbral principal y 700 como umbral secundario.
+## CONCLUSIÓN: Al comparar, nos hemos quedado con 800 como umbral principal y 700 como umbral secundario.
 
-#=============================================================================
-#Ampliación Parte 3 (I): métricas globales de la red (Topología I y II)
-#=============================================================================
+
+# ---PARTE 3.1: Métricas globales de la red --- 
+
 g_lcc <- igraph::largest_component(g)
 
 metricas_extra <- data.frame(
@@ -341,3 +342,5 @@ metricas_extra <- data.frame(
 )
 print(metricas_extra)
 write.csv2(metricas_extra, file = "metricas_ampliadas.csv", row.names = FALSE)
+
+## CONCLUSIÓN: La red es pequeña, densa y organizada, con grupos de genes muy cohesionados entre sí (asortatividad alta)
