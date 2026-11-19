@@ -346,9 +346,8 @@ write.csv2(metricas_extra, file = "metricas_ampliadas.csv", row.names = FALSE)
 ## CONCLUSIÓN: La red es pequeña, densa y organizada, con grupos de genes muy cohesionados entre sí (asortatividad alta)
 
 
-=============================================================================
-Ampliación Parte 3 (II): centralidad de cada gen (Topología I)
-=============================================================================
+# ---PARTE 3.2: Centralidad de cada gen---
+
 centralidad <- data.frame(
   gen              = igraph::V(g)$name,
   grado            = igraph::degree(g),
@@ -359,3 +358,4 @@ centralidad <- data.frame(
 centralidad <- centralidad[order(-centralidad$intermediacion), ]
 print(head(centralidad, 10))
 write.csv2(centralidad, file = "centralidad_genes.csv", row.names = FALSE)
+
