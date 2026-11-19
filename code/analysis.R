@@ -325,3 +325,19 @@ print(comparacion)
 write.csv2(comparacion, file = "comparacion_umbrales.csv", row.names = FALSE)
 
 ## Al comparar, nos hemos quedado con 800 como umbral principal y 700 como umbral secundario.
+
+#=============================================================================
+#Ampliación Parte 3 (I): métricas globales de la red (Topología I y II)
+#=============================================================================
+g_lcc <- igraph::largest_component(g)
+
+metricas_extra <- data.frame(
+  metrica = c("Transitividad global", "Clustering medio (Watts-Strogatz)",
+              "Longitud media de camino (componente mayor)", "Diámetro (componente mayor)",
+              "Asortatividad de grado"),
+  valor   = c(igraph::transitivity(g, type = "global"), igraph::transitivity(g, type = "average"),
+              igraph::mean_distance(g_lcc), igraph::diameter(g_lcc),
+              igraph::assortativity_degree(g))
+)
+print(metricas_extra)
+write.csv2(metricas_extra, file = "metricas_ampliadas.csv", row.names = FALSE)
