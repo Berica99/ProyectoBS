@@ -362,7 +362,7 @@ write.csv2(centralidad, file = "centralidad_genes.csv", row.names = FALSE)
 ## CONCLUSIÓN: Se observa que CEP290 es el principal gen puente entre un núcleo ciliar muy denso (genes BBS) y un módulo de fotorreceptores ramificado (alrededor de AIPL1, GUCY2D y RPGRIP1)
 
 
-## ---PARTE 4: tamaño = grado, color = intermediación (5 genes con más intermediación) ---
+# ---PARTE 4: tamaño = grado, color = intermediación (5 genes con más intermediación) ---
 
 btw <- igraph::betweenness(g)
 colores <- rev(heat.colors(100))[cut(btw, breaks = 100, labels = FALSE)]
@@ -378,12 +378,11 @@ plot(g, layout = igraph::layout_with_fr(g),
      edge.width = 0.5, main = "Tamaño = grado, color = intermediación")
 dev.off()
 
+## CONCLUSIÓN: Se observa que los genes con más conexiones (núcleo BBS, nodos grandes) casi no actúan como puente, 
+# mientras que los nodos con mayor intermediación (CEP290, AIPL1, GUCY2D) tienen un grado moderado y controlan el flujo entre módulos
 
-#CONCLUSIÓN: Se observa que los genes con más conexiones (núcleo BBS, nodos grandes) casi no actúan como puente, 
-#mientras que los nodos con mayor intermediación (CEP290, AIPL1, GUCY2D) tienen un grado moderado y controlan el flujo entre módulos
 
-
-## --- PARTE 5: comparar métodos de comunidades ---
+## ---PARTE 5.1: comparar métodos de comunidades ---
 set.seed(123)
 com_walktrap   <- igraph::cluster_walktrap(g)
 com_fastgreedy <- igraph::cluster_fast_greedy(g)
@@ -409,3 +408,19 @@ print(table(Louvain = igraph::membership(communities), Walktrap = igraph::member
 
 # CONCLUSIÓN: Se observa que Louvain, Fast Greedy y Leiden obtienen la misma partición (4 comunidades, Q = 0,32, NMI = 1) 
 # y Walktrap coincide en gran medida (NMI = 0,76): solo reasigna 4 genes de la frontera entre el módulo ciliar y el de fotorreceptores, por lo que las comunidades son robustas al método.
+
+
+# ---PARTE 5.2: Comprobación de modularidad con 100 comunidades aleatorias ---
+
+set.seed(123)
+q_aleatorias <- replicate(100, igraph::modularity(igraph::cluster_louvain(
+  igraph::sample_gnm(igraph::gorder(g), igraph::gsize(g)))))
+q_real <- igraph::modularity(g, igraph::membership(communities))
+cat("Modularidad real:", q_real, "| media en redes aleatorias:", mean(q_aleatorias),
+    "| proporción de redes aleatorias con Q >= real:", mean(q_aleatorias >= q_real), "\n")
+
+pdf("modularidad_vs_aleatorias.pdf")
+hist(q_aleatorias, xlim = range(c(q_aleatorias, q_real)),
+     main = "Modularidad en redes aleatorias", xlab = "Q")
+abline(v = q_real, col = "red", lwd = 2)
+dev.off()
