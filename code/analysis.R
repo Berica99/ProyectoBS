@@ -346,7 +346,7 @@ write.csv2(metricas_extra, file = "metricas_ampliadas.csv", row.names = FALSE)
 ## CONCLUSIÓN: La red es pequeña, densa y organizada, con grupos de genes muy cohesionados entre sí (asortatividad alta)
 
 
-# ---PARTE 3.2: Centralidad de cada gen---
+# ---PARTE 3.2: Centralidad de cada gen ---
 
 centralidad <- data.frame(
   gen              = igraph::V(g)$name,
@@ -362,7 +362,7 @@ write.csv2(centralidad, file = "centralidad_genes.csv", row.names = FALSE)
 ## CONCLUSIÓN: Se observa que CEP290 es el principal gen puente entre un núcleo ciliar muy denso (genes BBS) y un módulo de fotorreceptores ramificado (alrededor de AIPL1, GUCY2D y RPGRIP1)
 
 
-## ---Ampliación Parte 4: tamaño = grado, color = intermediación (5 genes con más intermediación)
+## ---PARTE 4: tamaño = grado, color = intermediación (5 genes con más intermediación) ---
 
 btw <- igraph::betweenness(g)
 colores <- rev(heat.colors(100))[cut(btw, breaks = 100, labels = FALSE)]
@@ -373,6 +373,11 @@ pdf("network_betweenness.pdf", width = 8, height = 8)
 set.seed(123)
 plot(g, layout = igraph::layout_with_fr(g),
      vertex.size = 4 + igraph::degree(g) / 2, vertex.color = colores,
-     vertex.label = etiquetas, vertex.label.cex = 0.8, vertex.label.color = "black",
+     vertex.label = etiquetas, vertex.label.cex = 0.9, vertex.label.color = "black",
+     vertex.label.font = 2, vertex.label.dist = 1.5,
      edge.width = 0.5, main = "Tamaño = grado, color = intermediación")
 dev.off()
+
+
+
+
