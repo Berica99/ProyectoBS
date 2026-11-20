@@ -443,3 +443,14 @@ dev.off()
 
 # CONCLUSIÓN: Se observa que, tras eliminar GO redundantes (131 -> 48 términos), el enriquecimiento lo dominan el ensamblaje del cilio (26/55 genes) y la percepción visual (22/55), coincidiendo con los dos módulos de la red; 
 # los términos extraoculares (adipogénesis, leptina, lateralidad) se deben a los genes BBS y reflejan el carácter sindrómico de las ciliopatías.
+
+
+# ---PARTE 6.2: dotplots por comunidad ---
+for (i in names(enrichment_results_clusters)) {
+  if (nrow(as.data.frame(enrichment_results_clusters[[i]])) > 0) {
+    pdf(paste0("GO_enrichmentcluster", i, "_dotplot.pdf"), width = 9, height = 7)
+    print(dotplot(enrichment_results_clusters[[i]], showCategory = 10,
+            title = paste("GO Enrichment, cluster", i)))
+    dev.off()
+  }
+}
