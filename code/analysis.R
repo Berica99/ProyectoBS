@@ -424,3 +424,6 @@ hist(q_aleatorias, xlim = range(c(q_aleatorias, q_real)),
      main = "Modularidad en redes aleatorias", xlab = "Q")
 abline(v = q_real, col = "red", lwd = 2)
 dev.off()
+
+
+# CONCLUSIÓN: Se observa que la modularidad real (Q = 0,32) supera a la de casi todas las redes aleatorias del mismo tamaño (media = 0,28; proporción con Q mayor o igual = 0,02). Esto quiere decir que la estructura en comunidades no se debe al azar, aunque el margen es moderado por la fuerte conexión entre los dos módulos
