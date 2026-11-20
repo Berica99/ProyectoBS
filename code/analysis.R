@@ -382,3 +382,27 @@ dev.off()
 #CONCLUSIÓN: Se observa que los genes con más conexiones (núcleo BBS, nodos grandes) casi no actúan como puente, 
 #mientras que los nodos con mayor intermediación (CEP290, AIPL1, GUCY2D) tienen un grado moderado y controlan el flujo entre módulos
 
+
+## --- PARTE 5: comparar métodos de comunidades ---
+set.seed(123)
+com_walktrap   <- igraph::cluster_walktrap(g)
+com_fastgreedy <- igraph::cluster_fast_greedy(g)
+com_leiden     <- igraph::cluster_leiden(g, objective_function = "modularity")
+
+comparacion_metodos <- data.frame(
+  metodo         = c("Louvain", "Walktrap", "Fast Greedy", "Leiden"),
+  n_comunidades  = c(length(communities), length(com_walktrap), length(com_fastgreedy), length(com_leiden)),
+  modularidad    = c(igraph::modularity(g, igraph::membership(communities)),
+                     igraph::modularity(g, igraph::membership(com_walktrap)),
+                     igraph::modularity(g, igraph::membership(com_fastgreedy)),
+                     igraph::modularity(g, igraph::membership(com_leiden))),
+  nmi_vs_louvain = c(1,
+                     igraph::compare(communities, com_walktrap, method = "nmi"),
+                     igraph::compare(communities, com_fastgreedy, method = "nmi"),
+                     igraph::compare(communities, com_leiden, method = "nmi"))
+)
+print(comparacion_metodos)
+write.csv2(comparacion_metodos, file = "comparacion_metodos_comunidades.csv", row.names = FALSE)
+
+## Genes coincidentes entre Louvain y Walktrap
+print(table(Louvain = igraph::membership(communities), Walktrap = igraph::membership(com_walktrap)))
