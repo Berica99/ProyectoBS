@@ -406,3 +406,6 @@ write.csv2(comparacion_metodos, file = "comparacion_metodos_comunidades.csv", ro
 
 ## Genes coincidentes entre Louvain y Walktrap
 print(table(Louvain = igraph::membership(communities), Walktrap = igraph::membership(com_walktrap)))
+
+# CONCLUSIÓN: Se observa que Louvain, Fast Greedy y Leiden obtienen la misma partición (4 comunidades, Q = 0,32, NMI = 1) 
+# y Walktrap coincide en gran medida (NMI = 0,76): solo reasigna 4 genes de la frontera entre el módulo ciliar y el de fotorreceptores, por lo que las comunidades son robustas al método.
