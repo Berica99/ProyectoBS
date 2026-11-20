@@ -379,5 +379,6 @@ plot(g, layout = igraph::layout_with_fr(g),
 dev.off()
 
 
-
+#CONCLUSIÓN: Se observa que los genes con más conexiones (núcleo BBS, nodos grandes) casi no actúan como puente, 
+#mientras que los nodos con mayor intermediación (CEP290, AIPL1, GUCY2D) tienen un grado moderado y controlan el flujo entre módulos
 
