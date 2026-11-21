@@ -454,3 +454,7 @@ for (i in names(enrichment_results_clusters)) {
     dev.off()
   }
 }
+
+
+#CONCLUSIÓN: Se observa que la comunidad 1 corresponde al módulo ciliar (14 de 16 genes en ensamblaje del cilio) y que su término más específico 
+#frente al resto de la red es la diferenciación de adipocitos (genes BBS), reflejo de la obesidad propia del síndrome de Bardet-Biedl
